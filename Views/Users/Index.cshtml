@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Chatroom.Models.Users>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Login to Chatroom</h1>
+    @ViewBag.error
+    <form method="post" asp-controller="account" asp-action="login" class="container">
+        <div id="loginRow" class="row">
+            <label class="col-sm-4">Login</label>
+            <input name="login" class="col-sm" type="text" />
+        </div>
+        <div id="passwordRow" class="row">
+            <label class="col-sm-4">Password</label>
+            <input name="password" class="col-sm" type="password" />
+        </div>
+        <div id="login" class="row">
+            <input class="col-sm-2" type="submit" value="Login" asp-action="Login" onclick="continueToChat()" />
+            <span class="col-sm-4"></span>
+            <a class="col-sm-2" asp-action="Create">Sign up</a>
+        </div>
+    </form>
+</div>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rol)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
