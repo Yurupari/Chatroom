@@ -1,5 +1,8 @@
+using Chatroom.Consumers;
 using Chatroom.Hubs;
 using Chatroom.Models;
+using GreenPipes;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,11 +31,33 @@ namespace Chatroom
         {
             services.AddDbContext<StockChatroomDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("StockChatroomDB")));
+
             services.AddSession(options =>
                 {
                     options.IdleTimeout = TimeSpan.FromMinutes(10);
                 });
+
+            services.AddMassTransit(options =>
+                {
+                    options.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                        {
+                            config.UseHealthCheck(provider);
+                            config.Host(new Uri("rabbitmq://localhost"), h=>
+                                {
+                                    h.Username("guest");
+                                    h.Password("guest");
+                                });
+                            //config.ReceiveEndpoint("ticketQueue", ep =>
+                            //    {
+                            //        ep.PrefetchCount = 50;
+                            //        ep.UseMessageRetry(r => r.Interval(2, 100));
+                            //        ep.ConfigureConsumer<TicketConsumer>(provider);
+                            //    });
+                        }));
+                });
+
             services.AddControllersWithViews();
+
             services.AddSignalR(options =>
                 {
                     options.EnableDetailedErrors = true;
